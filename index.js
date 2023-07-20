@@ -1,26 +1,30 @@
-const conectMongoDB = require('./src/config/db')
-const app = require('express')()
-const dotenv = require('dotenv').config()
-const colors = require('colors')
-const  middleware  = require('./src/middleware/presetMiddleware')
-const { notFoundHandellar, globalErrorHandellar } = require('./src/middleware/errorHandler')
-const PORT = process.env.SERVER_PORT || 4000
+import express from 'express';
+import dotenv from 'dotenv';
+import colors from 'colors';
+import connectMongoDB from './src/config/db.js';
+import { notFoundHandellar, globalErrorHandellar } from './src/middleware/errorHandler.js';
+import {middleware} from './src/middleware/presetMiddleware.js';
+import userSeeder from './Userseed.js';
+
+dotenv.config();
+const app = express();
+const PORT = process.env.SERVER_PORT || 4000;
 
 // Global middleware set
-app.use(middleware)
-
-// Route 
+app.use(middleware);
 
 
-// GLobal error handler
-app.use([notFoundHandellar , globalErrorHandellar])
+// Route
+
+
+// Global error handler
+app.use([notFoundHandellar, globalErrorHandellar]);
 
 // Connect with DB and Server listening
-conectMongoDB().then((res) => {
-    app.listen(PORT , () => {
-        console.log(`SERVER IS LISTENNING ON PORT ${PORT}`.green)
-    })        
-})
-.catch(err => console.log(err.message.red))
-
-
+connectMongoDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`SERVER IS LISTENING ON PORT ${PORT}`.green);
+    });
+  })
+  .catch((err) => console.log(err.message.red));

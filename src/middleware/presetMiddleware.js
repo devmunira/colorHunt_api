@@ -1,8 +1,8 @@
-const cors = require('cors')
-const morgan = require('morgan')
-const express = require('express')
-
-const middleware = [cors() , morgan('dev') , express.json() , express.urlencoded({extended : false})]
+import cors from 'cors';
+import morgan from 'morgan';
+import express from 'express';
 
 
-module.exports =  middleware;
+export const middleware = [cors() , morgan('dev') , express.json() , express.urlencoded({extended : false})]
+
+

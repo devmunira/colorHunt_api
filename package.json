@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon index.js"
   },
@@ -16,6 +17,8 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "nodemon": "^3.0.1"
   }

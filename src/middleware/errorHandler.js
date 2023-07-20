@@ -1,4 +1,4 @@
-const notFoundHandellar = (_req,_res,next) => {
+export const notFoundHandellar = (_req,_res,next) => {
     const error = new Error('404 Not Found')
     error.status = 404
     next(error)
@@ -6,7 +6,7 @@ const notFoundHandellar = (_req,_res,next) => {
 
 
 
-const globalErrorHandellar = (error,_req,res,_next)=>{
+export const globalErrorHandellar = (error,_req,res,_next)=>{
     if(error.status){
         res.status(error.status).json({
             message : error.message
@@ -19,8 +19,3 @@ const globalErrorHandellar = (error,_req,res,_next)=>{
     }
 
 };
-
-module.exports = {
-    globalErrorHandellar,
-    notFoundHandellar
-}
