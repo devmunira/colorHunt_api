@@ -9,6 +9,9 @@ const PORT = process.env.SERVER_PORT || 4000
 // Global middleware set
 app.use(middleware)
 
+// Route 
+
+
 // GLobal error handler
 app.use([notFoundHandellar , globalErrorHandellar])
 
