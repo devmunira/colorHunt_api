@@ -1,0 +1,1319 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/FSWFOFFICIAL/colorhunt_api/1.0.0
+  - description: Localhost 4000 Port for development
+    url: http://localhost:4000/api/v1
+info:
+  version: 1.0.1
+  title: color-hunt-api
+  description: >-
+    The API for the Color Hunt Clone project. It's allow user to register, login
+    then create their own color platters, update and delete and also auth user
+    can like, share and download color platters and any user can explore color
+    platters.
+  contact:
+    name: Munira Akter
+    email: muniraweb@gmail.com
+    url: muniraakter.com
+tags:
+  - name: Auth
+    description: >-
+      This Tag is responsible for handle all authenticated endpoints [Piublic &
+      Private]
+  - name: Platters
+    description: >-
+      This Tag is responsible for handle all platters endpoints [Piublic &
+      Private]
+  - name: Tags
+    description: This Tag is responsible for handle all tags endpoints [Piublic & Private]
+  - name: Like
+    description: This Tag is responsible for handle all like endpoints [Private]
+  - name: Report
+    description: This Tag is responsible for handle all report endpoints [Private]
+  - name: User
+    description: This Tag is responsible for handle all authenticated endpoints [Private]
+  - name: Settings
+    description: >-
+      This Tag is responsible for handle all authenticated endpoints [Piublic &
+      Private]
+  - name: Pages
+    description: >-
+      This Tag is responsible for handle all authenticated endpoints [Piublic &
+      Private]
+paths:
+  /auth/signup:
+    post:
+      description: Sign Up End Points for user registration proccess
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  format: text
+                  example: munira12
+                email:
+                  type: string
+                  format: email
+                  example: muniraweb@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: password12@
+                is_admin:
+                  type: boolean
+                  format: true / false
+                  example: true
+                  default: false
+              required:
+                - password
+                - username
+                - email
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Sing Up Successfully Completed!
+                  data:
+                    $ref: '#/components/schemas/UserAuthDTO'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /auth/signin:
+    post:
+      description: Sign In End Points for user login proccess
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  format: text
+                  example: munira12
+                email:
+                  type: string
+                  format: email
+                  example: muniraweb@gmail.com
+                password:
+                  type: string
+                  format: password
+                  example: password12@
+              required:
+                - password
+              oneOf:
+                - required:
+                    - username
+                - required:
+                    - email
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Sing In Successfully Completed!
+                  data:
+                    $ref: '#/components/schemas/UserAuthDTO'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /forgot-password/email-verify:
+    post:
+      description: Email Veify for password reset process
+      tags:
+        - Auth
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: muniraweb@gmail.com
+              required: 
+                - email
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Check your inbox for verification token
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'            
+  /forgot-password/token-verify:
+    post:
+      description: Token Veify for password reset process
+      tags:
+        - Auth
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  format: int32
+                  example: 658974
+              required: 
+                - token
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Verification Successfully Completed.
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'            
+  /forgot-password/password-reset:
+    post:
+      description: password reset process
+      tags:
+        - Auth
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: muni658974
+              required: 
+                - password
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Password Reset Successfully Completed.
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'            
+  /me/profile-update:
+    post:
+      description: Self Profile Update for Auth user
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: muniraweb
+                email:
+                  type: string
+                  format: email
+                  example: muniraweb@gmail.com
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Profile Update Successfully Completed.
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500' 
+        '401':
+          $ref: '#/components/responses/401' 
+        '403':
+          $ref: '#/components/responses/403' 
+  /password-change:
+    post:
+      description: Password Update for Auth user
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: muni658974
+                old_password:
+                  type: string
+                  format: password
+                  example: muni658974
+              required: 
+                - password
+                - old_password
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Password Reset Successfully Completed.
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+        '401':
+          $ref: '#/components/responses/401' 
+        '403':
+          $ref: '#/components/responses/403'
+  /revoked-generate/token:
+    post:
+      description: Profile Update for Auth user
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: muni658974
+              required: 
+                - password
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Password Reset Successfully Completed.
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /token-verify:
+    post:
+      description: Profile Update for Auth user
+      tags: [Auth]
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  format: password
+                  example: muni658974
+              required: 
+                - password
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Password Reset Successfully Completed.
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /platters:
+    post:
+      description: Create new Platters
+      tags: [Platters]
+      security: 
+      - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+               tags:
+                type: array
+                items:
+                  type: string
+                  example: ['874635gdjfgsdf', '874635gdjfgsdf']
+              allOf:
+                - $ref: '#/components/schemas/plattersBodyDTO'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: Platters Created Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllData: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+        '401':
+          $ref: '#/components/responses/401' 
+        '403':
+          $ref: '#/components/responses/403'
+    get:
+      description: All can be retrieved with like count
+      tags: [Platters]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Platters Retrive Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /platters/random:
+    get:
+      description: All can be retrieved random platters with like count
+      tags: [Platters]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Random Platters Retrive Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /platters/collection:
+    get:
+      description: All can be retrieved auth user conllection platters with like count
+      tags: [Platters]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Collection Platters Retrive Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /platters/popular:
+    get:
+      description: All can be retrieved popular platters with like count
+      tags: [Platters]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Popular Platters Retrive Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /platters/recents:
+    get:
+      description: All can be retrieved recents platters with like count
+      tags: [Platters]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Recents Platters Retrive Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+  /platters/:platterId:
+    get:
+      description: Get Single Platters with full details
+      tags: [Platters]
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: Single Platters Retrive Successfully.
+                  data:
+                    type: object
+                    properties:
+                      id: 
+                        $ref : '#/components/schemas/uniqueIdDTO'
+                      user:
+                        $ref: '#/components/schemas/userBodyDTO'
+                      tags:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/tagDTO'
+                      link: 
+                        type: string
+                        format: url
+                        example: '/platters/:id'
+                      like:
+                        type: integer
+                        format: int32
+                        example: 1456
+                    allOf:
+                      - $ref : '#/components/schemas/plattersBodyDTO'
+                      - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
+    put:
+      description: Create or Update whole Platter
+      tags: [Platters]
+      security: 
+      - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+               tags:
+                type: array
+                items:
+                  type: string
+                  example: ['874635gdjfgsdf', '874635gdjfgsdf']
+              allOf:
+                - $ref: '#/components/schemas/plattersBodyDTO'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: Platters Created or Updated Successfully.
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          $ref : '#/components/schemas/uniqueIdDTO'
+                        user:
+                          $ref: '#/components/schemas/userBodyDTO'
+                        tags:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/tagDTO'
+                        link: 
+                          type: string
+                          format: url
+                          example: '/platters'
+                        like:
+                          type: integer
+                          format: int32
+                          example: 1456
+                      allOf:
+                        - $ref : '#/components/schemas/plattersBodyDTO'
+                        - $ref : '#/components/schemas/Timestamp'
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/:id'
+                      getAllData: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+        '401':
+          $ref: '#/components/responses/401' 
+        '403':
+          $ref: '#/components/responses/403'
+    patch:
+      description: Update exiting Platter
+      tags: [Platters]
+      security: 
+      - bearerAuth: []
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+               tags:
+                type: array
+                items:
+                  type: string
+                  example: ['874635gdjfgsdf', '874635gdjfgsdf']
+              allOf:
+                - $ref: '#/components/schemas/plattersBodyDTO'
+      responses:
+        '204':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 204
+                  message:
+                    type: string
+                    example: Platters Updated Successfully.
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/:id'
+                      getAllData: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+        '400':
+          $ref: '#/components/responses/400'
+        '405':
+          $ref: '#/components/responses/405'
+        '500':
+          $ref: '#/components/responses/500'
+        '401':
+          $ref: '#/components/responses/401' 
+        '403':
+          $ref: '#/components/responses/403'
+    delete:
+      description: Delete Single Platters
+      tags: [Platters]
+      responses:
+        '204':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 204
+                  message:
+                    type: string
+                    example: Single Platters Deleted Successfully.
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters'
+                      getAllRabdom: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/random'
+                      getAllCollection: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/collection'
+                      getAllPopular: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/popular'
+                      getAllRecents: 
+                        type: string
+                        format: uri
+                        example: '/api/v1/platters/recent'
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+  
+        
+      
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    '400':
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 400
+              message:
+                type: string
+                example: Bad Request!
+              errors:
+                $ref: '#/components/schemas/400'
+    '401':
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 401
+              error:
+                type: string
+                example: Unauthenticated
+              message:
+                type: string
+                example: You are not an authenticated user
+    '403':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 403
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: You don't have the right permissions
+    '404':
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 404
+              error:
+                type: string
+                example: Not Found
+              message:
+                type: string
+                example: Requested resource not found
+    '405':
+      description: Method Not Allowed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 405
+              error:
+                type: string
+                example: Method Not Allowed
+              message:
+                type: string
+                example: You are hiting on a invalid method
+    '500':
+      description: Server Error Occur
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+                example: 500
+              error:
+                type: string
+                example: Server Error
+              message:
+                type: string
+                example: Server Not Responding! Try again later.
+  schemas:
+    '400':
+      type: array
+      items:
+        type: object
+        properties:
+          fields:
+            type: string
+            example: username
+          message:
+            type: string
+            example: username max length is 20 Letters
+    Timestamp:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: datetime
+        updatedAt:
+          type: string
+          format: datetime
+      required:
+        - createdAt
+        - updatedAt
+    uniqueIdDTO:
+      type: string
+      example: 60ef9c35e892b1452c59f2e3
+    userBodyDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 60ef9c35e892b1452c59f2e3
+        username:
+          type: string
+          example: muniraweb
+        email:
+          type: string
+          format: email
+          example: muniraweb@gmail.com
+        is_admin:
+          type: boolean
+          example: false
+    plattersBodyDTO:
+      type: object
+      properties:
+        firstColor:
+          type: string
+          format: code
+          example: "#fff"
+        secondColor:
+          type: string
+          format: code
+          example: "#000"
+        thirdColor:
+          type: string
+          format: code
+          example: "#111"
+        forthColor:
+          type: string
+          format: code
+          example: "#777"
+        status:
+          type: string
+          example: publish
+          enum: ['publish' , 'unpublish']
+    tagDTO:
+      type: object
+      properties:
+        id: 
+          $ref : '#/components/schemas/uniqueIdDTO'
+        name:
+          type: string
+          format: text
+          example: "pink"
+        slug:
+          type: string
+          format: text
+          example: "pink"
+        
+    UserAuthDTO:
+      type: object
+      properties:
+        access_token:
+          type: string
+          format: JWT Token
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        refresh_token:
+          type: string
+          format: JWT Token
+          example: >-
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        user:
+          $ref: '#/components/schemas/userBodyDTO'
