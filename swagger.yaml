@@ -43,7 +43,7 @@ tags:
       Private]
 paths:
   # Authentication all EndPoints Start from Here
-  /auth/signup:
+  "/auth/signup":
     post:
       description: Sign Up End Points for user registration proccess
       tags:
@@ -98,7 +98,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /auth/signin:
+  "/auth/signin":
     post:
       description: Sign In End Points for user login proccess
       tags:
@@ -151,7 +151,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /forgot-password/email-verify:
+  "/forgot-password/email-verify":
     post:
       description: Email Veify for password reset process
       tags:
@@ -189,7 +189,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'            
-  /forgot-password/token-verify:
+  "/forgot-password/token-verify":
     post:
       description: Token Veify for password reset process
       tags:
@@ -227,7 +227,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'            
-  /forgot-password/password-reset:
+  "/forgot-password/password-reset":
     post:
       description: password reset process
       tags:
@@ -265,7 +265,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'            
-  /me/profile-update:
+  "/me/profile-update":
     post:
       description: Self Profile Update for Auth user
       tags: [Auth]
@@ -309,7 +309,7 @@ paths:
           $ref: '#/components/responses/401' 
         '403':
           $ref: '#/components/responses/403' 
-  /password-change:
+  "/password-change":
     post:
       description: Password Update for Auth user
       tags: [Auth]
@@ -357,7 +357,7 @@ paths:
           $ref: '#/components/responses/401' 
         '403':
           $ref: '#/components/responses/403'
-  /revoked-generate/token:
+  "/revoked-generate/token":
     post:
       description: Profile Update for Auth user
       tags: [Auth]
@@ -396,7 +396,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /token-verify:
+  "/token-verify":
     post:
       description: Profile Update for Auth user
       tags: [Auth]
@@ -436,7 +436,7 @@ paths:
         '500':
           $ref: '#/components/responses/500'
   # Platters all EndPoints Start from Here
-  /platters:
+  "/platters":
     post:
       description: Create new Platters
       tags: [Platters]
@@ -584,7 +584,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /platters/random:
+  "/platters/random":
     get:
       description: All can be retrieved random platters with like count
       tags: [Platters]
@@ -654,7 +654,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /platters/collection:
+  "/platters/collection":
     get:
       description: All can be retrieved auth user conllection platters with like count
       tags: [Platters]
@@ -724,7 +724,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /platters/popular:
+  "/platters/popular":
     get:
       description: All can be retrieved popular platters with like count
       tags: [Platters]
@@ -794,7 +794,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /platters/recents:
+  "/platters/recents":
     get:
       description: All can be retrieved recents platters with like count
       tags: [Platters]
@@ -864,7 +864,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'
-  /platters/{id}:
+  "/platters/{id}":
     get:
       description: Get Single Platters with full details
       tags: [Platters]
@@ -1123,8 +1123,8 @@ paths:
           $ref: '#/components/responses/401'
         '403':
           $ref: '#/components/responses/403'
-  # /platters/:tagSlug:
-  /platters/{id}/like:
+  # "/platters/:tagSlug":
+  "/platters/{id}/like":
     post:
       description: Like an Exiitng Platetrs
       tags: [Like]
@@ -1181,7 +1181,7 @@ paths:
           $ref: '#/components/responses/401' 
         '403':
           $ref: '#/components/responses/403'
-  /platters/{id}/dislike:
+  "/platters/{id}/dislike":
     post:
       description: Dislike an Exiitng Platetrs
       tags: [Like]
@@ -2100,8 +2100,9 @@ paths:
   
   # Settings all EndPoints Start from Here
   # /settings/:id:
-  #   get:
-  #   put:
+    # get:
+    #   description
+    # put:
   
   
   
@@ -2445,42 +2446,104 @@ components:
             - userId
             - platterId
         - $ref: '#/components/schemas/Timestamp'
-    reportCreateDTO:
+    settings:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref : '#/components/schemas/uniqueIdDTO'
+            logo:
+              type: string
+              format: url
+              example: www.s3.aws.com/instance/logo.png
+            favicon:
+              type: string
+              format: url
+              example: www.s3.aws.com/instance/favicon.png
+            title:
+              type: string
+              format: text
+              example: Color Hunt
+            description:
+              type: string
+              format: text
+              example: This is an clone of color hunt
+            author:
+              type: string
+              format: text
+              example: Munira AKter
+            about:
+              type: string
+              format: text
+              example: This is an clone of color hunt
+    settingsRequestBody:
       type: object
       properties:
-        code:
-          type: integer
-          example: 201
-        message:
-          type: string
-          example: Report Created SuccessFully
         data:
-          $ref: '#/components/schemas/reports'
+          $ref: '#/components/schemas/settings'
+    settingsResponseBody:
+      type: object
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/settings'
+            - $ref: '#/components/schemas/Timestamp'
         links:
           type: object
           properties:
             self:
               type: string
               format: url
-              example: api/v1/reports
-    reportsUpdateDTO:
+              example: api/v1/settings
+    pages:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref : '#/components/schemas/uniqueIdDTO'
+            url:
+              type: string
+              format: url
+              example: www.s3.aws.com/instance/logo.png
+            content:
+              type: string
+              format: ling Text
+              example: <h1> Hello </h1>
+            title:
+              type: string
+              format: text
+              example: Color Hunt
+            description:
+              type: string
+              format: text
+              example: This is an clone of color hunt
+            status:
+              type: string
+              format: text
+              example: publish
+            keywords:
+              type: string
+              format: text
+              example: keyword1, keyword2
+    pagesRequestBody:
       type: object
       properties:
-        code:
-          type: integer
-          example: 201
-        message:
-          type: string
-          example: Report Created SuccessFully
         data:
-          $ref: '#/components/schemas/reports'
+          $ref: '#/components/schemas/pages'
+    pagesResponseBody:
+      type: object
+      properties:
+        data:
+          allOf:
+            - $ref: '#/components/schemas/pages'
+            - $ref: '#/components/schemas/Timestamp'
         links:
           type: object
           properties:
             self:
               type: string
               format: url
-              example: api/v1/reports/id
+              example: api/v1/pages
     UserAuthDTO:
       type: object
       properties:
@@ -2496,3 +2559,14 @@ components:
             eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
         user:
           $ref: '#/components/schemas/userBodyDTO'
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
