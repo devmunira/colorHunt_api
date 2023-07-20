@@ -42,7 +42,6 @@ tags:
       This Tag is responsible for handle all authenticated endpoints [Piublic &
       Private]
 paths:
-  # Authentication all EndPoints Start from Here
   "/auth/signup":
     post:
       description: Sign Up End Points for user registration proccess
@@ -359,22 +358,19 @@ paths:
           $ref: '#/components/responses/403'
   "/revoked-generate/token":
     post:
-      description: Profile Update for Auth user
+      description: Revoked Refresh token & Generate new Access Token
       tags: [Auth]
-      security:
-        - bearerAuth: []
       requestBody:
         content:
           "application/json":
             schema:
               type: object
               properties:
-                password:
+                refresh_token:
                   type: string
-                  format: password
-                  example: muni658974
-              required: 
-                - password
+                  format: jwt
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+             
       responses:
         '200':
           description: Success
@@ -389,7 +385,7 @@ paths:
                     example: 200
                   message:
                     type: string
-                    example: Password Reset Successfully Completed.
+                    example: Refresh Token revoked and Access Token Generate.
         '400':
           $ref: '#/components/responses/400'
         '405':
@@ -398,22 +394,20 @@ paths:
           $ref: '#/components/responses/500'
   "/token-verify":
     post:
-      description: Profile Update for Auth user
+      description: Verify Refresh Token
       tags: [Auth]
-      security:
-        - bearerAuth: []
       requestBody:
         content:
           "application/json":
             schema:
               type: object
               properties:
-                password:
+                refresh_token:
                   type: string
                   format: password
-                  example: muni658974
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
               required: 
-                - password
+                - refresh_token
       responses:
         '200':
           description: Success
@@ -428,7 +422,10 @@ paths:
                     example: 200
                   message:
                     type: string
-                    example: Password Reset Successfully Completed.
+                    example: Token is valid.
+                  isValid:
+                    type: boolean
+                    example: true
         '400':
           $ref: '#/components/responses/400'
         '405':
@@ -505,6 +502,7 @@ paths:
                         type: string
                         format: uri
                         example: '/api/v1/platters'
+                 
         '400':
           $ref: '#/components/responses/400'
         '405':
@@ -518,6 +516,9 @@ paths:
     get:
       description: All can be retrieved with like count
       tags: [Platters]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
         '200':
           description: Success
@@ -580,6 +581,8 @@ paths:
                         type: string
                         format: uri
                         example: '/api/v1/platters/recent'
+                  pagination:
+                    $ref : '#/components/schemas/pagination'
         '405':
           $ref: '#/components/responses/405'
         '500':
@@ -588,6 +591,9 @@ paths:
     get:
       description: All can be retrieved random platters with like count
       tags: [Platters]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
         '200':
           description: Success
@@ -650,6 +656,8 @@ paths:
                         type: string
                         format: uri
                         example: '/api/v1/platters/recent'
+                  pagination:
+                    $ref : '#/components/schemas/pagination'
         '405':
           $ref: '#/components/responses/405'
         '500':
@@ -658,6 +666,9 @@ paths:
     get:
       description: All can be retrieved auth user conllection platters with like count
       tags: [Platters]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
         '200':
           description: Success
@@ -720,6 +731,8 @@ paths:
                         type: string
                         format: uri
                         example: '/api/v1/platters/recent'
+                  pagination:
+                    $ref : '#/components/schemas/pagination'
         '405':
           $ref: '#/components/responses/405'
         '500':
@@ -728,6 +741,9 @@ paths:
     get:
       description: All can be retrieved popular platters with like count
       tags: [Platters]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
         '200':
           description: Success
@@ -790,6 +806,8 @@ paths:
                         type: string
                         format: uri
                         example: '/api/v1/platters/recent'
+                  pagination:
+                    $ref : '#/components/schemas/pagination'
         '405':
           $ref: '#/components/responses/405'
         '500':
@@ -798,6 +816,9 @@ paths:
     get:
       description: All can be retrieved recents platters with like count
       tags: [Platters]
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/limit'
       responses:
         '200':
           description: Success
@@ -860,6 +881,8 @@ paths:
                         type: string
                         format: uri
                         example: '/api/v1/platters/recent'
+                  pagination:
+                    $ref : '#/components/schemas/pagination'
         '405':
           $ref: '#/components/responses/405'
         '500':
@@ -2094,12 +2117,9 @@ paths:
           $ref: '#/components/responses/404'
         
       
-          
-          
- 
   
   # Settings all EndPoints Start from Here
-  /settings/:id:
+  "/settings/:id":
     get:
       description: Get first Settings enties
       tags:
@@ -2161,16 +2181,156 @@ paths:
   
   
   # Page all EndPoints Start from Here
-  /pages:
-    get: 
-      description : Get All Pages with just Page model data
-    post:
-  /reports/:reportId:
+  "/pages":
     get:
-      description : Get  Page with just Page model data
-    put:
+      description: Get All Page enties
+      tags:
+        - Pages
+      responses:
+        '200':
+          description: Sucessfully get data
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    format: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      $ref : '#/components/schemas/pagesResponseBody'
+        
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
+    post:
+      description: Create new Page [Private]
+      tags:
+        - Pages
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Request Body
+        content:
+          application/json:
+            schema:
+              $ref : '#/components/schemas/pagesRequestBody'
+      responses:
+        '201':
+          description: Data Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pagesResponseBody'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '500':
+          $ref: '#/components/responses/500'
+  "/pages/{id}":
+    get:
+      description: Get Page enties
+      tags:
+        - Pages
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Sucessfully get data
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    format: string
+                    example: Success
+                  data:
+                    $ref : '#/components/schemas/pagesResponseBody'
+        
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
     patch:
+      security:
+        - bearerAuth: []
+      description: Upadate Spacific some columns 
+      tags: [Settings]
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref : '#/components/schemas/pagesRequestBody'
+      responses:
+        '200':
+          description: Settings Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/pagesResponseBody'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
     delete:
+      security:
+        - bearerAuth: []
+      description: Delete Page 
+      tags: [Pages]
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '204':
+          description: Data Deleted Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int31
+                    example: 400
+                  message:
+                    type: string
+                    format: string
+                    example: Data deleted successfully
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
+      
           
           
           
