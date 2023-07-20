@@ -2099,24 +2099,78 @@ paths:
  
   
   # Settings all EndPoints Start from Here
-  # /settings/:id:
-    # get:
-    #   description
-    # put:
-  
+  /settings/:id:
+    get:
+      description: Get first Settings enties
+      tags:
+        - Settings
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      responses:
+        '200':
+          description: Sucessfully get Settings
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    format: string
+                    example: Success
+                  data:
+                    $ref : '#/components/schemas/settingsResponseBody'
+        
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
+    patch:
+      security:
+        - bearerAuth: []
+      description: Upadate Spacific some columns only settings 
+      tags: [Settings]
+      parameters:
+        - $ref: '#/components/parameters/idPathParam'
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref : '#/components/schemas/settingsRequestBody'
+      responses:
+        '200':
+          description: Settings Updated Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/settingsResponseBody'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '500':
+          $ref: '#/components/responses/500'
+        '404':
+          $ref: '#/components/responses/404'
   
   
   # Page all EndPoints Start from Here
-  # /pages:
-  #   get: 
-  #     description : Get All Pages with just Page model data
-  #   post:
-  # /reports/:reportId:
-  #   get:
-  #     description : Get  Page with just Page model data
-  #   put:
-  #   patch:
-  #   delete:
+  /pages:
+    get: 
+      description : Get All Pages with just Page model data
+    post:
+  /reports/:reportId:
+    get:
+      description : Get  Page with just Page model data
+    put:
+    patch:
+    delete:
           
           
           
