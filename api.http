@@ -1,0 +1,12 @@
+### Resiter
+POST http://localhost:4000/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "email": "munira1@hotmail.com",
+  "password": "Passrd12@",
+  "is_admin": "true",
+  "status" : "active",
+  "confirm_password" : "Passrd12@",
+  "username" : "munira2"
+}

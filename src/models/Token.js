@@ -32,7 +32,7 @@ const tokenSchema = new Schema({
         require: true
     }
 
-},{timestamps})
+},{timestamps : true})
 
 
 // Check Token is Exipred or Not

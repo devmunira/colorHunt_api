@@ -108,25 +108,17 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                usernameOremail:
                   type: string
                   format: text
                   example: munira12
-                email:
-                  type: string
-                  format: email
-                  example: muniraweb@gmail.com
                 password:
                   type: string
                   format: password
                   example: password12@
               required:
                 - password
-              oneOf:
-                - required:
-                    - username
-                - required:
-                    - email
+                - usernameOremail
       responses:
         '200':
           description: Success

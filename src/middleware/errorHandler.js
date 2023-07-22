@@ -17,5 +17,4 @@ export const globalErrorHandellar = (error,_req,res,_next)=>{
     else{
         res.status(500).json({message : error.message})
     }
-
 };
