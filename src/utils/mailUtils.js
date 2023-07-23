@@ -1,7 +1,8 @@
 import nodemailer from "nodemailer"
 
 // generate gmail smtp for mail sender
-export const mailTransporter = () => {
+export const mailTransporter = (_req,_res,next) => {
+   try {
     const transporter = nodemailer.createTransport({
         host: 'sdcbangladesh.org', 
         port: 465, 
@@ -13,4 +14,9 @@ export const mailTransporter = () => {
     });
 
     return transporter;
+   } catch (err) {
+      let error = new Error(err)
+      error.status = 400,
+      next(err)
+   }
 }

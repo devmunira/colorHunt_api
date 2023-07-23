@@ -1,5 +1,7 @@
 import User from "../models/User.js";
 import bcrypt  from 'bcrypt';
+import { add, addMinutes } from "date-fns";
+
 
 
 // Create or Register New User
@@ -29,7 +31,7 @@ export const createUser = async (req) => {
 }
 
 // Update Token for verify Email
-export const updateToken = async (email) => {
+export const updateToken = async (email,OTP) => {
     const user = await User.findOne({email})
     user.verification_token = OTP
     user.expiredAt = addMinutes(new Date() , 5)

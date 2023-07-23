@@ -1,4 +1,3 @@
-import { add, addMinutes } from "date-fns";
 import { loginUser } from "../libs/authenticate.js";
 import { createToken } from "../libs/token.js";
 import { createUser, updateToken } from "../libs/user.js"
@@ -19,8 +18,10 @@ export const LoginUserByUsernameOrEmail = async (req,res,next) => {
           access_token,
           refresh_token
         })
-     } catch (error) {
-          next(error)
+     } catch (err) {
+         const error = new Error(err)
+         error.status = 400
+         next(error)
      }
 }
 
@@ -39,8 +40,10 @@ export const registerUserManually = async (req,res,next) => {
         access_token,
         refresh_token
       })
-   } catch (error) {
-        next(error)
+   } catch (err) {
+      const error = new Error(err)
+      error.status = 400
+      next(error)
    }
 }
 
@@ -54,7 +57,7 @@ export const verifyEmailForForgotPass = async (req,res,next) => {
       const OTP = generateUniqueCode();
       const {email} = req.body
 
-      const user = await updateToken(email)
+      const user = await updateToken(email,OTP)
 
       const isSend = await sendEmailForEmailVerify(email,user.username,OTP)
       if(!isSend) return res.status(500).json({message : 'Email can not be delivered! we are sorry'})
@@ -63,8 +66,10 @@ export const verifyEmailForForgotPass = async (req,res,next) => {
         code : 200,
         mesaage : 'Check your inbox for verification token',
       })
-   } catch (error) {
-        next(error)
+   } catch (err) {
+      const error = new Error(err)
+      error.status = 500
+      next(error)
    }
 }
 
