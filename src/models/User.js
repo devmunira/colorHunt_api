@@ -21,13 +21,31 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    verification_token : {
+        type: Number,
+        require: false,
+    },
+    expiredAt : {
+        type: Date,
+        require: false,
+    },
     status : {
         type: String,
         default: 'active',
         enum: ['active', 'inactive', 'blocked'],
     },
 
-},{timestamps : true})
+},{timestamps : true});
+
+
+userSchema.virtual('notExpired').get(function(){
+    return this.verification_token && !isAfter(new Date() , new Date(this.expiredAt))
+})
+
+userSchema.set('toJSON' , {
+    virtuals : true,
+    versionKey: false,
+});
 
 
 const User = model('User' , userSchema)

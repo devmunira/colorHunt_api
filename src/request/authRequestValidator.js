@@ -71,13 +71,13 @@ export const registerRequestValidator = [
 const isUsername = (value) => {
     // Your logic to check if it's a valid username
     return /^[a-zA-Z0-9_]+$/.test(value);
-  };
+};
   
-  // Function to check if the input is a valid email
-  const isEmail = (value) => {
+// Function to check if the input is a valid email
+const isEmail = (value) => {
     // Your logic to check if it's a valid email
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  };
+};
 
 
 export const loginRequestValidator = [
@@ -108,4 +108,17 @@ export const loginRequestValidator = [
 
         return true
     }),
+]
+
+
+// forgot password email verify request validator
+export const verifyEmailRequest = [
+    body('email')
+    .trim()
+    .isEmail().withMessage('Email must be an valid email')
+    .custom(async email => {
+        const user = await User.findOne({email})
+        if(!user) throw new Error('Invalid Email Address')
+        return true
+    })
 ]

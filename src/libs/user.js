@@ -1,6 +1,8 @@
 import User from "../models/User.js";
 import bcrypt  from 'bcrypt';
 
+
+// Create or Register New User
 export const createUser = async (req) => {
     const {username,email,password} = req.body
     const hashPassword = await bcrypt.hash(password , 10)
@@ -24,4 +26,13 @@ export const createUser = async (req) => {
         errors.status = 500,
         next(errors)
     }
+}
+
+// Update Token for verify Email
+export const updateToken = async (email) => {
+    const user = await User.findOne({email})
+    user.verification_token = OTP
+    user.expiredAt = addMinutes(new Date() , 5)
+    user.save();
+    return user;
 }
