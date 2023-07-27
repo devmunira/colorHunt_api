@@ -2,7 +2,7 @@ import {Schema , model} from "mongoose"
 import {isAfter} from "date-fns"
 
 
-const tokenSchema = new Schema({
+const authTokenSchema = new Schema({
     token : {
         require : true,
         type: String,
@@ -36,20 +36,22 @@ const tokenSchema = new Schema({
 
 
 // Check Token is Exipred or Not
-tokenSchema.virtual('isExpired').get(function(){
+authTokenSchema.virtual('isExpired').get(function(){
     return isAfter(new Date() , new Date(this.expiredAt))
 })
 
 // check token isActive or Not based on not expired and not revoked
-tokenSchema.virtual('isActive').get(function(){
+authTokenSchema.virtual('isActive').get(function(){
     return !this.isRevoked && !this.isExpired
 })
 
 // Set virtuals
-tokenSchema.set('toJSON', {
+authTokenSchema.set('toJSON', {
     virtuals: true,
     versionKey : false
 })
 
-const Token = model('Token' , tokenSchema)
-export default Token;
+
+
+const AuthToken = model('AuthToken' , authTokenSchema)
+export default AuthToken;

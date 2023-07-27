@@ -1,7 +1,5 @@
 openapi: 3.0.0
 servers:
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/FSWFOFFICIAL/colorhunt_api/1.0.0
   - description: Localhost 4000 Port for development
     url: http://localhost:4000/api/v1
 info:
@@ -181,7 +179,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'            
-  "/forgot-password/token-verify":
+  "/auth/forgot-password/token-verify":
     post:
       description: Token Veify for password reset process
       tags:
@@ -193,11 +191,15 @@ paths:
               type: object
               properties:
                 token:
-                  type: string
+                  type: int
                   format: int32
                   example: 658974
+                userId: 
+                  type: string
+                  example: "64bc052bd33381fd40a658f9"
               required: 
                 - token
+                - userId
       responses:
         '200':
           description: Success
@@ -219,7 +221,7 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'            
-  "/forgot-password/password-reset":
+  "/auth/forgot-password/password-reset":
     post:
       description: password reset process
       tags:
@@ -234,8 +236,17 @@ paths:
                   type: string
                   format: password
                   example: muni658974
+                confirm_password:
+                  type: string
+                  format: password
+                  example: muni658974
+                userId: 
+                  type: string
+                  example: "64bc052bd33381fd40a658f9"
               required: 
                 - password
+                - confirm_password
+                - userId
       responses:
         '200':
           description: Success
@@ -257,12 +268,13 @@ paths:
           $ref: '#/components/responses/405'
         '500':
           $ref: '#/components/responses/500'            
-  "/me/profile-update":
-    post:
+  "/profile":
+    patch:
       description: Self Profile Update for Auth user
       tags: [Auth]
       security:
         - bearerAuth: []
+        - RefreshTokenHeader: []
       requestBody:
         content:
           "application/json":
@@ -276,6 +288,9 @@ paths:
                   type: string
                   format: email
                   example: muniraweb@gmail.com
+                userId:
+                  type: string
+                  example: "64bc052bd33381fd40a658f9"
       responses:
         '200':
           description: Success
@@ -2336,6 +2351,10 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    RefreshTokenHeader:
+      type: apiKey
+      in: header
+      name: x-refresh-token
   parameters:
     page:
       in: query

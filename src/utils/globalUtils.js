@@ -12,5 +12,5 @@ export const saltted = async () => {
 export const generateUniqueCode = (length = 6) => {
     const otp = otpGenerator.generate(length, {lowerCaseAlphabets:false, upperCaseAlphabets: false,  specialChars: false }); 
     return otp;
-  }
+}
   

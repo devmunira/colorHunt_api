@@ -1,15 +1,16 @@
 
 import jwt from "jsonwebtoken";
-import Token from './../models/Token.js';
+import Token from '../models/AuthToken.js';
 import {add} from "date-fns"
 import ip from "ip"
 
 export const createToken = async (user) => {
+     console.log(user)
    try {
-        const access_token = jwt.sign({...user}, process.env.JWT_PASSWORD , {
+        const access_token = jwt.sign({...user, issuedIp: ip.address()}, process.env.JWT_PASSWORD , {
         expiresIn : 10 * 60
        });
-       const refresh_token = jwt.sign({...user}, process.env.JWT_REFRESH_PASSWORD , {
+       const refresh_token = jwt.sign({...user, issuedIp: ip.address()}, process.env.JWT_REFRESH_PASSWORD , {
          expiresIn : 3 * 24 * 60 * 60
        });
 
@@ -26,6 +27,6 @@ export const createToken = async (user) => {
         refresh_token
       }
    } catch (error) {
-        next(error)
+     console.log(error)
    }
 }
