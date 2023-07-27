@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 
 // Custom validator function to check if email is unique
-const isEmailUnique = async(email) => {
+export const isEmailUnique = async(email) => {
     const user = await User.findOne({email});
     if (user) {
         return Promise.reject('Email is already registered');
