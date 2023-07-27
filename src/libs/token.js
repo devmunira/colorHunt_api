@@ -19,10 +19,7 @@ export const createToken = async (user) => {
             issuedIp: ip.address(),
             expiredAt : addMinutes(new Date() , 3).toISOString()
        });
-
-
       await token.save()
-       console.log(access_token, refresh_token)
       return {
         access_token,
         refresh_token

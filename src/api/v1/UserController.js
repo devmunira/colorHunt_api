@@ -2,7 +2,6 @@ import User from "../../models/User.js"
 
 // update profile info
 export const upadateProfile = async (req,res,next) => {
-    console.log(req.customHeaders)
     if(req.customHeaders){
         res.setHeader('authorization' , req.customHeaders.authorization)
         res.setHeader('x-refresh-token' , req.customHeaders.xrefreshtoken)

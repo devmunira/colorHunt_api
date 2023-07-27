@@ -11,7 +11,7 @@ router.post('/signup' , registerRequestValidator , requestValidator , registerUs
 router.post('/signin' , loginRequestValidator , requestValidator, LoginUserByUsernameOrEmail)
 router.post('/forgot-password/email-verify' , verifyEmailRequest, requestValidator , verifyEmailForForgotPass)
 router.post('/forgot-password/token-verify', verifyTokenForForgotPass)
-router.post('/forgot-password/password-reset' , passwordResetValidation , requestValidator, updatePassword)
+router.post('/forgot-password/password-reset' ,  passwordResetValidation , requestValidator, updatePassword)
 
 
 // export router for useages
