@@ -291,6 +291,7 @@ paths:
                 userId:
                   type: string
                   example: "64bc052bd33381fd40a658f9"
+              
       responses:
         '200':
           description: Success
@@ -317,11 +318,12 @@ paths:
         '403':
           $ref: '#/components/responses/403' 
   "/password-change":
-    post:
+    patch:
       description: Password Update for Auth user
       tags: [Auth]
       security:
         - bearerAuth: []
+        - RefreshTokenHeader: []
       requestBody:
         content:
           "application/json":
@@ -336,6 +338,9 @@ paths:
                   type: string
                   format: password
                   example: muni658974
+                userId:
+                  type: string
+                  example: "64bc052bd33381fd40a658f9"
               required: 
                 - password
                 - old_password

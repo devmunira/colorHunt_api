@@ -1,6 +1,6 @@
 import express from "express"
-import { LoginUserByUsernameOrEmail, registerUserManually, updatePassword, verifyEmailForForgotPass, verifyTokenForForgotPass } from "../api/v1/AuthenticateController.js"
-import { loginRequestValidator, passwordResetValidation, registerRequestValidator, verifyEmailRequest } from "../request/authRequestValidator.js"
+import { LoginUserByUsernameOrEmail, registerUserManually, updatePassword, verifyEmailForForgotPass, verifyTokenForForgotPass } from "../api/v1/auth/AuthenticateController.js"
+import { loginRequestValidator, passwordResetValidation, registerRequestValidator, verifyEmailRequest } from "../api/v1/auth/authRequestValidator.js"
 import { requestValidator } from "../middleware/requestValidator.js"
 
 // get router function from express

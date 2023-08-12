@@ -1,6 +1,6 @@
 import { body } from "express-validator"
-import User from "../models/User.js"
-import { isEmailUnique } from "./authRequestValidator.js"
+import User from "../../../models/User.js"
+import  bcrypt  from 'bcrypt';
 
 
 export const profileUpdateValidator = [
@@ -30,6 +30,33 @@ export const profileUpdateValidator = [
         if (user && user.id !== id) 
             throw new Error('Email already exits')
         return true
+    }),
+
+]
+
+
+// change password request validation
+export const changePasswordValidation = [
+    body('password')
+        .trim()
+        .isLength({min: 6, max: 12})
+        .withMessage('Password must be between 5-10 charecters')
+        .bail()
+        .isStrongPassword()
+        .withMessage('Password must be strong'),
+
+    body('old_password')
+        .trim()
+        .custom(async (val, {req}) => {
+            const user = await User.findById(req.user._id).exec();
+            if (!user) {
+                return Promise.reject('User not exits!')
+            }
+            else if (!bcrypt.compare(val , user.password)) {
+                return Promise.reject('Password not match!')
+            }
+
+            return true;
     }),
 
 ]

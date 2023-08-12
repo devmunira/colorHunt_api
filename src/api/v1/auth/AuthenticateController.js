@@ -1,10 +1,10 @@
-import { loginUser } from "../../libs/authenticate.js";
-import { createToken } from "../../libs/token.js";
-import { createUser, updateToken } from "../../libs/user.js"
-import User from "../../models/User.js";
-import { generateUniqueCode } from "../../utils/globalUtils.js";
-import {sendEmailForEmailVerify} from "../../libs/authenticate.js"
+import { loginUser } from "../../../libs/authenticate.js";
+import { createToken } from "../../../libs/token.js";
+import { createUser, updateToken } from "../../../libs/user.js"
+import { generateUniqueCode } from "../../../utils/globalUtils.js";
+import {sendEmailForEmailVerify} from "../../../libs/authenticate.js"
 import  bcrypt  from 'bcrypt';
+import User from "../../../models/User.js";
 
 
 // Login User by valid Username/Email & Password
